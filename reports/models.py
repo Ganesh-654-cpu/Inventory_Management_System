@@ -1,3 +1,9 @@
-from django.db import models
-
+# from django.db import models
+# class Sale(models.Model):
+#     product = ...
+#     quantity = ...
+#     sale_price = ...
+    
+#     sale_date = models.DateField(auto_now_add=True)
+   
 # Create your models here.

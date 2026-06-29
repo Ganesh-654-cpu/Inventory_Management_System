@@ -3,10 +3,17 @@
 
 from django.db import models
 from products.models import Product
-
+from customers.models import Customer
 
 class Sale(models.Model):
     invoice_no = models.CharField(max_length=50, unique=True)
+    
+    customer = models.ForeignKey(
+    Customer,
+    on_delete=models.CASCADE,
+    null=True,
+    blank=True
+)
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
@@ -31,3 +38,4 @@ class Sale(models.Model):
 
     def __str__(self):
         return self.invoice_no
+

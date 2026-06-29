@@ -9,6 +9,7 @@ from .models import Sale
 class SaleAdmin(admin.ModelAdmin):
     list_display = (
         'invoice_no',
+        'customer',
         'product',
         'quantity',
         'sale_price',

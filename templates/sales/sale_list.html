@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sales List</title>
+</head>
+<body>
+
+<h2>Sales List</h2>
+
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Invoice No</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Invoice</th>
+    </tr>
+
+    {% for sale in sales %}
+    <tr>
+        <td>{{ sale.invoice_no }}</td>
+        <td>{{ sale.product.name }}</td>
+        <td>{{ sale.quantity }}</td>
+        <td>{{ sale.sale_price }}</td>
+        <td>
+            <a href="{% url 'invoice' sale.id %}">
+                View Invoice
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+</body>
+</html>

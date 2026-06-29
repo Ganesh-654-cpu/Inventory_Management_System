@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice - {{ sale.invoice_no }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f5f5f5;
+        }
+        .invoice-box {
+            max-width: 900px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,.15);
+        }
+        h3 { font-size: 18px; margin-bottom: 4px; }
+        h2 { font-size: 20px; margin-bottom: 4px; }
+        h5 { font-size: 14px; }
+        h6 { font-size: 13px; }
+        p { margin-bottom: 4px; font-size: 13px; }
+        hr { margin: 8px 0; }
+        .table { font-size: 13px; margin-bottom: 6px; }
+        .row.mt-5 { margin-top: 16px !important; }
+        table th {
+            background: #198754 !important;
+            color: white;
+        }
+        .tax-table th {
+            background: #f8f9fa !important;
+            color: #212529;
+        }
+        .tax-table tr.table-success th {
+            background: #198754 !important;
+            color: white;
+        }
+        @media print {
+            .no-print {
+                display: none;
+            }
+            body {
+                background: white;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="invoice-box">
+
+    <!-- Company Header -->
+    <div class="text-center">
+        <img src="/media/products/company/grm-triangle-logo.jpg" width="120" alt="Company Logo">
+        <h3 class="mt-2">Ganesh Inventory Management</h3>
+        <p class="mb-0">Pune, Maharashtra</p>
+        <p>GST No : 27ABCDE1234F1Z5</p>
+    </div>
+
+    <hr>
+    <h2 class="text-center text-success">TAX INVOICE</h2>
+    <hr>
+
+    <!-- Invoice Info + Customer Details -->
+    <div class="row">
+        <div class="col-md-6">
+            <p><strong>Invoice No :</strong> {{ sale.invoice_no }}</p>
+            <p><strong>Date :</strong> {{ sale.sale_date }}</p>
+        </div>
+        <div class="col-md-6 text-end">
+            <h5 class="text-primary">Customer Details</h5>
+            {% if sale.customer %}
+                <p><strong>Name :</strong> {{ sale.customer.name }}</p>
+                <p><strong>Mobile :</strong> {{ sale.customer.mobile|default:"—" }}</p>
+                <p><strong>Email :</strong> {{ sale.customer.email|default:"—" }}</p>
+                <p><strong>Address :</strong> {{ sale.customer.address|default:"—" }}</p>
+            {% else %}
+                <p><strong>Name :</strong> Walk-in Customer</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Product Table -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ sale.product.name }}</td>
+                <td>{{ sale.quantity }}</td>
+                <td>₹ {{ sale.sale_price }}</td>
+                <td>₹ {{ total }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Tax Summary Table -->
+    <table class="table table-bordered mt-4 tax-table">
+        <tr>
+            <th>Subtotal</th>
+            <td>₹ {{ total }}</td>
+        </tr>
+        <tr>
+            <th>CGST (9%)</th>
+            <td>₹ {{ cgst }}</td>
+        </tr>
+        <tr>
+            <th>SGST (9%)</th>
+            <td>₹ {{ sgst }}</td>
+        </tr>
+        <tr class="table-success">
+            <th>Grand Total</th>
+            <th>₹ {{ grand_total }}</th>
+        </tr>
+    </table>
+
+
+
+    <hr>
+    <!-- Barcode -->   <!-- QR Code -->
+
+    <!-- Barcode + QR Code side by side -->
+    <div class="row align-items-center mt-2 mb-2">
+        {% if barcode_url %}
+        <div class="col-6 text-center">
+            <h6 class="mb-1">Barcode</h6>
+            <img src="{{ barcode_url }}" width="150" height="150" style="object-fit:contain;" alt="Barcode">
+        </div>
+        {% endif %}
+        {% if qr_code %}
+        <div class="col-6 text-center">
+            <h6 class="mb-1">Scan QR Code</h6>
+            <img src="data:image/png;base64,{{ qr_code }}" width="150" height="150" style="object-fit:contain;" alt="QR Code">
+            <p class="text-muted mb-0" style="font-size:11px;">Scan to Verify Invoice</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <hr>
+
+
+    <!-- Signatures -->
+    <div class="row mt-5">
+        <div class="col">
+            ______________________
+            <br>
+            Customer Signature
+        </div>
+        <div class="col text-end">
+            ______________________
+            <br>
+            Authorized Signature
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Footer -->
+    <div class="text-center">
+        <h5>Thank You For Shopping</h5>
+        <p class="mb-1">Ganesh Inventory Management</p>
+        <p class="mb-1">Email : inventory@gmail.com</p>
+        <p>Mobile : +91 9876543210</p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="text-center mt-4 no-print">
+        <button onclick="window.print()" class="btn btn-outline-success">
+            Print Invoice
+        </button>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">
+            Dashboard
+        </a>
+        <a href="{% url 'download_invoice' sale.id %}" class="btn btn-outline-danger">
+            Download PDF
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>
