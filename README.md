@@ -257,8 +257,8 @@ git push origin feature-name
 
 - Python Full Stack Developer
 - Pune, Maharashtra
-- GitHub: https://github.com/yourusername
-- LinkedIn: https://linkedin.com/in/yourprofile
+- GitHub: https://github.com/Ganesh-654-cpu
+- LinkedIn: https://www.linkedin.com/in/ganeshmahajan654
 
 If you found this project helpful, please give it a ⭐ on GitHub.
 
